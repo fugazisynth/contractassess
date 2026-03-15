@@ -3,7 +3,655 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ContractAssess — Understand Any Freelance Contract in Plain English</title><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ContractAssess — Understand Any Freelance Contract in Plain English</title>
+  <meta name="description" content="Paste any client contract. Get a plain English breakdown, risk flags, and negotiation points in seconds. No lawyer needed." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #0f0e0c;
+      --paper:  #f5f0e8;
+      --cream:  #ede7d9;
+      --amber:  #c9862a;
+      --amber2: #e8a444;
+      --muted:  #6b6353;
+      --red:    #b84040;
+      --border: #d4cdbf;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+
+    /* ── RULE LINES DECORATION ── */
+    .rule { width: 100%; height: 1px; background: var(--border); }
+    .rule.amber { background: var(--amber); opacity: 0.4; }
+
+    /* ── HEADER ── */
+    header {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--paper);
+    }
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .logo span { color: var(--amber); }
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      border-radius: 2px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 6rem 2rem 4rem;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.4rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 2rem; height: 1px;
+      background: var(--amber); opacity: 0.6;
+    }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--amber);
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 2.8rem;
+      font-weight: 300;
+    }
+
+    /* ── FORM ── */
+    .form-wrap {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0.75rem;
+      max-width: 440px; margin: 0 auto;
+    }
+    .form-row {
+      display: flex; width: 100%; gap: 0;
+      border: 1.5px solid var(--ink);
+      background: #fff;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+    .form-row input[type="email"] {
+      flex: 1;
+      padding: 0.85rem 1rem;
+      border: none; outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      background: transparent;
+      color: var(--ink);
+    }
+    .form-row input[type="email"]::placeholder { color: #aaa; }
+    .form-row button {
+      padding: 0.85rem 1.4rem;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      border: none; cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .form-row button:hover { background: var(--amber); }
+    .form-note {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+    .form-note a { color: var(--muted); }
+
+    /* ── SUCCESS STATE ── */
+    .success-msg {
+      display: none;
+      padding: 1rem 1.5rem;
+      border: 1.5px solid var(--amber);
+      background: #fdf5e6;
+      color: var(--amber);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      max-width: 440px;
+      margin: 0 auto;
+      box-shadow: 3px 3px 0 var(--amber);
+    }
+
+    /* ── SOCIAL PROOF STRIP ── */
+    .social-strip {
+      position: relative; z-index: 1;
+      background: var(--ink);
+      color: var(--paper);
+      padding: 0.9rem 2rem;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      opacity: 0.92;
+    }
+    .social-strip strong { font-weight: 500; color: var(--amber2); }
+
+    /* ── PAIN SECTION ── */
+    .section {
+      position: relative; z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+    .section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+      line-height: 1.2;
+      margin-bottom: 3rem;
+      max-width: 560px;
+    }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+      border: 1.5px solid var(--border);
+    }
+    .pain-card {
+      background: var(--paper);
+      padding: 2rem 1.8rem;
+    }
+    .pain-icon {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .pain-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.6rem;
+      font-weight: 400;
+    }
+    .pain-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .pain-card.highlight {
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .pain-card.highlight h3 { color: var(--amber2); }
+    .pain-card.highlight p { color: #b0a898; }
+
+    /* ── HOW IT WORKS ── */
+    .how-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 640px) { .how-wrap { grid-template-columns: 1fr; } }
+
+    .step-list { list-style: none; }
+    .step-list li {
+      display: flex; gap: 1.2rem;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-list li:first-child { border-top: 1px solid var(--border); }
+    .step-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--border);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 2rem;
+      text-align: right;
+    }
+    .step-content h4 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      color: var(--ink);
+    }
+    .step-content p {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ── MOCK OUTPUT ── */
+    .mock-output {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      box-shadow: 6px 6px 0 var(--border);
+      padding: 1.5rem;
+      font-size: 0.82rem;
+    }
+    .mock-header {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .mock-item {
+      padding: 0.75rem 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .mock-item:last-child { border-bottom: none; }
+    .mock-clause {
+      font-weight: 500;
+      font-size: 0.8rem;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+    }
+    .mock-plain { color: var(--muted); line-height: 1.55; }
+    .risk-tag {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+      margin-top: 0.4rem;
+    }
+    .risk-high { background: #fde8e8; color: var(--red); }
+    .risk-low  { background: #e8f5e8; color: #3a7a3a; }
+    .risk-med  { background: #fff3dc; color: #8a5e00; }
+    .mock-score {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: #fdf5e6;
+      border: 1px solid var(--amber);
+      text-align: center;
+      font-weight: 500;
+      font-size: 0.8rem;
+      color: var(--amber);
+    }
+
+    /* ── QUOTE STRIP ── */
+    .quote-section {
+      position: relative; z-index: 1;
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .quote-section blockquote {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+      font-style: italic;
+      max-width: 700px;
+      margin: 0 auto 1rem;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+    .quote-attr {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── PRICING HINT ── */
+    .pricing-strip {
+      position: relative; z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .pricing-strip h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin-bottom: 1rem;
+    }
+    .pricing-strip p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 2rem;
+    }
+    .price-cards {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .price-card {
+      border: 1.5px solid var(--border);
+      padding: 1.5rem 1.8rem;
+      text-align: left;
+      min-width: 180px;
+      background: #fff;
+    }
+    .price-card.featured {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      box-shadow: 4px 4px 0 var(--amber);
+    }
+    .price-amount {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .price-card.featured .price-amount { color: var(--amber2); }
+    .price-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+    .price-card.featured .price-label { color: #8a8070; }
+    .price-desc {
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+    .price-card.featured .price-desc { color: #c0b8ac; }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer {
+      position: relative; z-index: 1;
+      background: #fafaf7;
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.6;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      background: var(--ink);
+      color: #7a7060;
+      padding: 1.8rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.75rem;
+    }
+    footer .logo { color: var(--paper); font-size: 0.95rem; }
+    footer a { color: #7a7060; text-decoration: none; }
+    footer a:hover { color: var(--amber2); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero > * {
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+    .hero-eyebrow { animation-delay: 0.1s; }
+    h1            { animation-delay: 0.2s; }
+    .hero-sub     { animation-delay: 0.3s; }
+    .form-wrap    { animation-delay: 0.4s; }
+    .success-msg  { animation-delay: 0.4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 580px) {
+      header { padding: 1rem 1.2rem; }
+      .hero { padding: 3.5rem 1.2rem 3rem; }
+      .section { padding: 3.5rem 1.2rem; }
+      .form-row { flex-direction: column; box-shadow: 3px 3px 0 var(--ink); }
+      .form-row button { width: 100%; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a class="logo" href="#">Contract<span>Assess</span></a>
+    <span class="badge">Early Access</span>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">For Freelancers & Independent Consultants</p>
+    <h1>Understand any client contract <em>before you sign.</em></h1>
+    <p class="hero-sub">
+      Paste any contract and get a plain English breakdown, risk flags, and negotiation points in seconds — no lawyer, no confusion, no nasty surprises.
+    </p>
+
+    <div class="form-wrap" id="form-container">
+      <form class="form-row" id="waitlist-form"
+            action="https://formspree.io/f/mwvrnqgw"
+            method="POST">
+        <input type="email" name="email" placeholder="Your email address" required />
+        <button type="submit">Get Early Access</button>
+      </form>
+      <p class="form-note">Free to join. No spam. Unsubscribe any time.</p>
+    </div>
+    <div class="success-msg" id="success-msg">
+      ✓ &nbsp; You're on the list. We'll email you when it launches.
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <div class="social-strip">
+    <strong>Thousands of freelancers</strong> lose money every year by signing contracts they don't understand. &nbsp;This fixes that.
+  </div>
+
+  <!-- PAIN SECTION -->
+  <div class="rule"></div>
+  <section class="section">
+    <p class="section-label">The Problem</p>
+    <h2>You shouldn't need a $400/hr lawyer to understand what you're signing.</h2>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">📄</div>
+        <h3>Clauses you can't decode</h3>
+        <p>Legal language is written to protect the person who hired the lawyer — not you. Most freelancers sign without fully understanding what they've agreed to.</p>
+      </div>
+      <div class="pain-card highlight">
+        <div class="pain-icon">⚠️</div>
+        <h3>You've already been burned</h3>
+        <p>Unpaid invoices. IP you lost without realising. Scope that crept past what you agreed to. It usually traces back to a clause you glossed over.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🤷</div>
+        <h3>No good middle option</h3>
+        <p>A lawyer costs too much. ChatGPT gives you generic, scary-sounding warnings. There's no clean, affordable tool built specifically for your situation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <div class="rule amber"></div>
+  <section class="section" style="padding-top: 4rem;">
+    <p class="section-label">How It Works</p>
+    <h2>Three steps. Under five minutes.</h2>
+    <div class="how-wrap">
+      <ul class="step-list">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-content">
+            <h4>Paste or upload your contract</h4>
+            <p>Works with any contract — client agreements, NDAs, SOWs, IP clauses. Upload a PDF or paste the text directly.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-content">
+            <h4>Get a plain English breakdown</h4>
+            <p>Every clause explained in plain language. Risk flags highlighted. Negotiation points surfaced where you have leverage.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-content">
+            <h4>Sign with confidence — or push back</h4>
+            <p>Know exactly what you're agreeing to. Get suggested edits for risky clauses. Or generate your own freelance contract from scratch.</p>
+          </div>
+        </li>
+      </ul>
+
+      <!-- MOCK OUTPUT -->
+      <div class="mock-output">
+        <div class="mock-header">Sample Analysis Output</div>
+        <div class="mock-item">
+          <div class="mock-clause">§4.2 — Intellectual Property</div>
+          <div class="mock-plain">The client claims ownership of all work you create — even work made outside this project using your own tools.</div>
+          <span class="risk-tag risk-high">⚠ High Risk</span>
+        </div>
+        <div class="mock-item">
+          <div class="mock-clause">§6.1 — Payment Terms</div>
+          <div class="mock-plain">You'll be paid within 45 days of invoice. No late fee clause included.</div>
+          <span class="risk-tag risk-med">⚡ Review Suggested</span>
+        </div>
+        <div class="mock-item">
+          <div class="mock-clause">§8.3 — Termination</div>
+          <div class="mock-plain">Either party can end this contract with 14 days notice. You keep payment for all work completed.</div>
+          <span class="risk-tag risk-low">✓ Fair</span>
+        </div>
+        <div class="mock-score">Overall Risk Score: Medium — 2 clauses need attention</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <blockquote>"I signed a contract I didn't understand and ended up owning none of the work I made. That was six months of my life."</blockquote>
+    <p class="quote-attr">— Real post, r/freelance, 2025</p>
+  </div>
+
+  <!-- PRICING HINT -->
+  <section class="pricing-strip">
+    <p class="section-label">Pricing</p>
+    <h2>No subscription required to start.</h2>
+    <p>Review a contract the moment you need to. No commitment.</p>
+    <div class="price-cards">
+      <div class="price-card">
+        <div class="price-amount">$4.99</div>
+        <div class="price-label">Per contract</div>
+        <div class="price-desc">Review any single contract. Pay only when you need it.</div>
+      </div>
+      <div class="price-card featured">
+        <div class="price-amount">$19</div>
+        <div class="price-label">Per month — Pro</div>
+        <div class="price-desc">Unlimited reviews. Contract generator. Saved history.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    ContractAssess is for informational purposes only and does not constitute legal advice.<br/>
+    For complex legal matters, always consult a qualified attorney in your jurisdiction.
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <a class="logo" href="#">Contract<span style="color:var(--amber)">Assess</span></a>
+    <span>© 2026 ContractAssess &nbsp;·&nbsp; <a href="mailto:hello@contractassess.com">hello@contractassess.com</a></span>
+  </footer>
+
+  <script>
+    const form = document.getElementById('waitlist-form');
+    const success = document.getElementById('success-msg');
+    const container = document.getElementById('form-container');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = new FormData(form);
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          container.style.display = 'none';
+          success.style.display = 'block';
+        } else {
+          alert('Something went wrong. Please try again.');
+        }
+      } catch {
+        alert('Network error. Please try again.');
+      }
+    });
+  </script>
+
+</body>
+</html>
+
   <meta name="description" content="Paste any client contract. Get a plain English breakdown, risk flags, and negotiation points in seconds. No lawyer needed." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
